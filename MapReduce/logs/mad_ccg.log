@@ -1,0 +1,111 @@
+[17:32:49,614]  INFO deprecation:1009 - session.id is deprecated. Instead, use dfs.metrics.session-id
+[17:32:49,624]  INFO JvmMetrics:76 - Initializing JVM Metrics with processName=JobTracker, sessionId=
+[17:32:50,349]  WARN JobSubmitter:150 - Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+[17:32:50,355]  WARN JobSubmitter:259 - No job jar file set.  User classes may not be found. See Job or Job#setJar(String).
+[17:32:50,379]  INFO FileInputFormat:280 - Total input paths to process : 1
+[17:32:50,472]  INFO JobSubmitter:396 - number of splits:1
+[17:32:50,751]  INFO JobSubmitter:479 - Submitting tokens for job: job_local509614148_0001
+[17:32:50,840]  WARN Configuration:2358 - file:/tmp/hadoop-caixiaocong/mapred/staging/caixiaocong509614148/.staging/job_local509614148_0001/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+[17:32:50,868]  WARN Configuration:2358 - file:/tmp/hadoop-caixiaocong/mapred/staging/caixiaocong509614148/.staging/job_local509614148_0001/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+[17:32:51,321]  WARN Configuration:2358 - file:/tmp/hadoop-caixiaocong/mapred/local/localRunner/caixiaocong/job_local509614148_0001/job_local509614148_0001.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+[17:32:51,353]  WARN Configuration:2358 - file:/tmp/hadoop-caixiaocong/mapred/local/localRunner/caixiaocong/job_local509614148_0001/job_local509614148_0001.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+[17:32:51,364]  INFO Job:1289 - The url to track the job: http://localhost:8080/
+[17:32:51,365]  INFO Job:1334 - Running job: job_local509614148_0001
+[17:32:51,379]  INFO LocalJobRunner:471 - OutputCommitter set in config null
+[17:32:51,390]  INFO LocalJobRunner:489 - OutputCommitter is org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter
+[17:32:51,522]  INFO LocalJobRunner:448 - Waiting for map tasks
+[17:32:51,529]  INFO LocalJobRunner:224 - Starting task: attempt_local509614148_0001_m_000000_0
+[17:32:51,602]  INFO ProcfsBasedProcessTree:182 - ProcfsBasedProcessTree currently is supported only on Linux.
+[17:32:51,711]  INFO Task:581 -  Using ResourceCalculatorProcessTree : org.apache.hadoop.yarn.util.WindowsBasedProcessTree@590ac05f
+[17:32:51,717]  INFO MapTask:733 - Processing split: file:/G:/Github-repository/Hadoop/MapReduce/target/input/1.txt:0+39349
+[17:32:51,735]  INFO MapTask:388 - Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+[17:32:51,800]  INFO MapTask:1182 - (EQUATOR) 0 kvi 26214396(104857584)
+[17:32:51,800]  INFO MapTask:975 - mapreduce.task.io.sort.mb: 100
+[17:32:51,800]  INFO MapTask:976 - soft limit at 83886080
+[17:32:51,801]  INFO MapTask:977 - bufstart = 0; bufvoid = 104857600
+[17:32:51,801]  INFO MapTask:978 - kvstart = 26214396; length = 6553600
+[17:32:51,996]  INFO LocalJobRunner:591 - 
+[17:32:51,997]  INFO MapTask:1437 - Starting flush of map output
+[17:32:51,997]  INFO MapTask:1455 - Spilling map output
+[17:32:51,997]  INFO MapTask:1456 - bufstart = 0; bufend = 62193; bufvoid = 104857600
+[17:32:51,997]  INFO MapTask:1458 - kvstart = 26214396(104857584); kvend = 26190932(104763728); length = 23465/6553600
+[17:32:52,174]  INFO MapTask:1641 - Finished spill 0
+[17:32:52,184]  INFO Task:995 - Task:attempt_local509614148_0001_m_000000_0 is done. And is in the process of committing
+[17:32:52,201]  INFO LocalJobRunner:591 - map
+[17:32:52,201]  INFO Task:1115 - Task 'attempt_local509614148_0001_m_000000_0' done.
+[17:32:52,202]  INFO LocalJobRunner:249 - Finishing task: attempt_local509614148_0001_m_000000_0
+[17:32:52,202]  INFO LocalJobRunner:456 - map task executor complete.
+[17:32:52,205]  INFO LocalJobRunner:448 - Waiting for reduce tasks
+[17:32:52,207]  INFO LocalJobRunner:302 - Starting task: attempt_local509614148_0001_r_000000_0
+[17:32:52,221]  INFO ProcfsBasedProcessTree:182 - ProcfsBasedProcessTree currently is supported only on Linux.
+[17:32:52,286]  INFO Task:581 -  Using ResourceCalculatorProcessTree : org.apache.hadoop.yarn.util.WindowsBasedProcessTree@2804b9c9
+[17:32:52,290]  INFO ReduceTask:362 - Using ShuffleConsumerPlugin: org.apache.hadoop.mapreduce.task.reduce.Shuffle@6756c38b
+[17:32:52,308]  INFO MergeManagerImpl:193 - MergerManager: memoryLimit=643353792, maxSingleShuffleLimit=160838448, mergeThreshold=424613504, ioSortFactor=10, memToMemMergeOutputsThreshold=10
+[17:32:52,322]  INFO EventFetcher:61 - attempt_local509614148_0001_r_000000_0 Thread started: EventFetcher for fetching Map Completion Events
+[17:32:52,373]  INFO Job:1355 - Job job_local509614148_0001 running in uber mode : false
+[17:32:52,373]  INFO LocalFetcher:140 - localfetcher#1 about to shuffle output of map attempt_local509614148_0001_m_000000_0 decomp: 73929 len: 73933 to MEMORY
+[17:32:52,375]  INFO Job:1362 -  map 100% reduce 0%
+[17:32:52,382]  INFO InMemoryMapOutput:100 - Read 73929 bytes from map-output for attempt_local509614148_0001_m_000000_0
+[17:32:52,439]  INFO MergeManagerImpl:307 - closeInMemoryFile -> map-output of size: 73929, inMemoryMapOutputs.size() -> 1, commitMemory -> 0, usedMemory ->73929
+[17:32:52,453]  INFO EventFetcher:76 - EventFetcher is interrupted.. Returning
+[17:32:52,455]  INFO LocalJobRunner:591 - 1 / 1 copied.
+[17:32:52,455]  INFO MergeManagerImpl:667 - finalMerge called with 1 in-memory map-outputs and 0 on-disk map-outputs
+[17:32:52,473]  INFO Merger:589 - Merging 1 sorted segments
+[17:32:52,474]  INFO Merger:688 - Down to the last merge-pass, with 1 segments left of total size: 73925 bytes
+[17:32:52,578]  INFO MergeManagerImpl:742 - Merged 1 segments, 73929 bytes to disk to satisfy reduce memory limit
+[17:32:52,579]  INFO MergeManagerImpl:772 - Merging 1 files, 73933 bytes from disk
+[17:32:52,581]  INFO MergeManagerImpl:787 - Merging 0 segments, 0 bytes from memory into reduce
+[17:32:52,581]  INFO Merger:589 - Merging 1 sorted segments
+[17:32:52,583]  INFO Merger:688 - Down to the last merge-pass, with 1 segments left of total size: 73925 bytes
+[17:32:52,585]  INFO LocalJobRunner:591 - 1 / 1 copied.
+[17:32:52,615]  INFO deprecation:1009 - mapred.skip.on is deprecated. Instead, use mapreduce.job.skiprecords
+[17:32:53,015]  INFO Task:995 - Task:attempt_local509614148_0001_r_000000_0 is done. And is in the process of committing
+[17:32:53,019]  INFO LocalJobRunner:591 - 1 / 1 copied.
+[17:32:53,019]  INFO Task:1156 - Task attempt_local509614148_0001_r_000000_0 is allowed to commit now
+[17:32:53,023]  INFO FileOutputCommitter:439 - Saved output of task 'attempt_local509614148_0001_r_000000_0' to file:/G:/Github-repository/Hadoop/MapReduce/target/output/1/_temporary/0/task_local509614148_0001_r_000000
+[17:32:53,024]  INFO LocalJobRunner:591 - reduce > reduce
+[17:32:53,030]  INFO Task:1115 - Task 'attempt_local509614148_0001_r_000000_0' done.
+[17:32:53,030]  INFO LocalJobRunner:325 - Finishing task: attempt_local509614148_0001_r_000000_0
+[17:32:53,031]  INFO LocalJobRunner:456 - reduce task executor complete.
+[17:32:53,377]  INFO Job:1362 -  map 100% reduce 100%
+[17:32:53,378]  INFO Job:1373 - Job job_local509614148_0001 completed successfully
+[17:32:53,405]  INFO Job:1380 - Counters: 33
+	File System Counters
+		FILE: Number of bytes read=226962
+		FILE: Number of bytes written=700281
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+	Map-Reduce Framework
+		Map input records=445
+		Map output records=5867
+		Map output bytes=62193
+		Map output materialized bytes=73933
+		Input split bytes=127
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=2269
+		Reduce shuffle bytes=73933
+		Reduce input records=5867
+		Reduce output records=2269
+		Spilled Records=11734
+		Shuffled Maps =1
+		Failed Shuffles=0
+		Merged Map outputs=1
+		GC time elapsed (ms)=11
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+		Total committed heap usage (bytes)=334495744
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=39349
+	File Output Format Counters 
+		Bytes Written=23380
+[17:32:53,405]  INFO WordCount:81 - MapReduce Finished.

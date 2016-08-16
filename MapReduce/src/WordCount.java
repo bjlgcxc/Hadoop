@@ -1,6 +1,9 @@
 
 import java.io.IOException;
 import java.util.StringTokenizer;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
@@ -20,6 +23,8 @@ import org.apache.hadoop.util.ToolRunner;
 
 public class WordCount extends Configured implements Tool {
 
+	public static final Log log = LogFactory.getLog(WordCount.class);
+	
 	//Mapper
 	public static class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
 		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
@@ -72,7 +77,8 @@ public class WordCount extends Configured implements Tool {
 			"./target/output/1"
 		};
 		int ret = ToolRunner.run(new WordCount(), arg);
-		System.out.println("MapReduce Finished.");
+		
+		log.info("MapReduce Finished.");
 		System.exit(ret);
 	}
 
