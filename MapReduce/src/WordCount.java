@@ -1,7 +1,5 @@
-
 import java.io.IOException;
 import java.util.StringTokenizer;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
@@ -13,6 +11,7 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Partitioner;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
@@ -21,12 +20,22 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+/**
+ * WordCount
+ * @author caixiaocong
+ *
+ */
 public class WordCount extends Configured implements Tool {
 
 	public static final Log log = LogFactory.getLog(WordCount.class);
 	
+	
 	//Mapper
-	public static class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
+	public static class MyMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+		@Override
+		public void setup(Context context){}
+		
+		@Override
 		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 			String line = value.toString();
 			StringTokenizer token = new StringTokenizer(line);
@@ -34,18 +43,40 @@ public class WordCount extends Configured implements Tool {
 				context.write(new Text(token.nextToken()), new IntWritable(1));
 			}
 		}		
+		
+		@Override
+		public void cleanup(Context context){}
 	}
 
+	
 	//Reducer
-	public static class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
+	public static class MyReducer extends Reducer<Text, IntWritable, Text, IntWritable> {	
+		@Override
+		public void setup(Context context){}
+		
 		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
 			int sum = 0;
-			for (IntWritable val : values) {
-				sum += val.get();
+			for (IntWritable value : values) {
+				sum += value.get();
 			}
 			context.write(key, new IntWritable(sum));
 		}
+		
+		@Override
+		public void cleanup(Context context){}
 	}
+	
+	
+	//Partitioner
+	public static class MyPartitioner extends Partitioner<Text, IntWritable>{
+
+		@Override
+		public int getPartition(Text key, IntWritable value, int numPartitions) {
+			return 0;
+		}
+		
+	} 
+	
 
 	//Run
 	public int run(String[] args) throws Exception {
@@ -53,9 +84,12 @@ public class WordCount extends Configured implements Tool {
         Job job = Job.getInstance(conf,"WordCount");
         
         job.setJarByClass(WordCount.class);  
-        job.setMapperClass(Map.class);  
-        job.setReducerClass(Reduce.class);
-      
+        job.setMapperClass(MyMapper.class);  
+        job.setReducerClass(MyReducer.class);
+        job.setCombinerClass(MyReducer.class);
+        job.setPartitionerClass(MyPartitioner.class);
+        job.setNumReduceTasks(2);
+        
         job.setOutputKeyClass(Text.class);  
         job.setOutputValueClass(IntWritable.class);  
         job.setInputFormatClass(TextInputFormat.class);  
@@ -73,7 +107,7 @@ public class WordCount extends Configured implements Tool {
 	
 	public static void main(String[] args) throws Exception {
 		String arg[] = new String[]{
-			"./target/input/1.txt",
+			"./target/input/file1.txt",
 			"./target/output/1"
 		};
 		int ret = ToolRunner.run(new WordCount(), arg);
