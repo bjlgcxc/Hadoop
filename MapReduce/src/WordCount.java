@@ -21,14 +21,13 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 /**
- * WordCount
+ * WordCount µ¥´Ê¼ÆÊý
  * @author caixiaocong
  *
  */
 public class WordCount extends Configured implements Tool {
 
 	public static final Log log = LogFactory.getLog(WordCount.class);
-	
 	
 	//Mapper
 	public static class MyMapper extends Mapper<LongWritable, Text, Text, IntWritable> {

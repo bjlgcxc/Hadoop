@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.StringTokenizer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
@@ -10,90 +9,51 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 /**
- * 倒排索引
+ * 数据去重
  * @author caixiaocong
  *
  */
-public class InvertedIndex extends Configured implements Tool{
+public class Dedup extends Configured implements Tool{
 
-	public static final Log log = LogFactory.getLog(InvertedIndex.class);
-	
-	//Mapper
+	public static final Log log = LogFactory.getLog(Dedup.class);
+
+	//Map
 	public static class MyMapper extends Mapper<LongWritable,Text,Text,Text>{
 		
 		@Override
 		public void map(LongWritable key,Text value,Context context) throws IOException, InterruptedException{
-			
-			String line = value.toString();
-			StringTokenizer tokens = new StringTokenizer(line);
-			
-			//获取输入文件名
-			FileSplit fileSplit = (FileSplit)context.getInputSplit();
-			String split[] = fileSplit.getPath().toString().split("/");
-			
-			while(tokens.hasMoreTokens()){
-				context.write(new Text(split[split.length-1] + ":" + tokens.nextToken()), new Text("1"));
-			}
-
+			context.write(value,new Text(""));
 		}
 		
 	}
 	
-	
-	//Combiner
-	public static class MyCombiner extends Reducer<Text,Text,Text,Text>{
-		
-		@Override
-		public void reduce(Text key,Iterable<Text> values,Context context) throws IOException, InterruptedException{
-			System.out.println(key);
-			String tokens[] = key.toString().split(":");
-			int sum = 0;
-			for(Text value:values){
-				sum += Integer.parseInt(value.toString());
-			}
-			context.write(new Text(tokens[1]), new Text(tokens[0] + ":" + sum));
-			System.out.println(tokens[0] + ":" + sum);
-			System.out.println("11");
-			System.out.println(tokens[1]);
-		}
-		
-	}
-	
-	
-	//Reducer
+	//Reduce
 	public static class MyReducer extends Reducer<Text,Text,Text,Text>{
 		
 		@Override
 		public void reduce(Text key,Iterable<Text> values,Context context) throws IOException, InterruptedException{
-			String str = "";
-			for(Text value:values){
-				str += value + ";";
-			}
-			context.write(key,new Text(str));
+			context.write(key, new Text(""));
 		}
 		
 	}
 	
-	
-	//run
+	//Run
 	public int run(String[] args) throws Exception {
 		
 		Configuration conf = new Configuration();  
-        Job job = Job.getInstance(conf,"InvertedIndex");
+        Job job = Job.getInstance(conf,"Dedup");
         
-        job.setJarByClass(InvertedIndex.class);  
+        job.setJarByClass(Dedup.class);  
         job.setMapperClass(MyMapper.class);  
-        job.setCombinerClass(MyCombiner.class);
         job.setReducerClass(MyReducer.class);
       
         job.setOutputKeyClass(Text.class);  
@@ -110,14 +70,14 @@ public class InvertedIndex extends Configured implements Tool{
 		return job.waitForCompletion(true) ? 0 : 1;  
 		
 	}
-	
+
 	
 	public static void main(String[] args) throws Exception {
 		String arg[] = new String[]{
-			"./target/input/2",
-			"./target/output/2"
+			"./target/input/3",
+			"./target/output/3"
 		};
-		int ret = ToolRunner.run(new InvertedIndex(), arg);
+		int ret = ToolRunner.run(new Dedup(), arg);
 			
 		log.info("MapReduce Finished.");
 		System.exit(ret);
