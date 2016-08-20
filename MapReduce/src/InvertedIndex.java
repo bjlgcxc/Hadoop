@@ -111,7 +111,7 @@ public class InvertedIndex extends Configured implements Tool{
 	
 	public static void main(String[] args) throws Exception {
 		String arg[] = new String[]{
-			"./target/input/file1.txt",
+			"./target/input/2",
 			"./target/output/2"
 		};
 		int ret = ToolRunner.run(new InvertedIndex(), arg);

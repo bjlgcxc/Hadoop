@@ -107,7 +107,7 @@ public class WordCount extends Configured implements Tool {
 	
 	public static void main(String[] args) throws Exception {
 		String arg[] = new String[]{
-			"./target/input/file1.txt",
+			"./target/input/1",
 			"./target/output/1"
 		};
 		int ret = ToolRunner.run(new WordCount(), arg);
