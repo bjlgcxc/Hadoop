@@ -1,18 +1,17 @@
 import java.io.IOException;
-import java.util.StringTokenizer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
@@ -20,80 +19,53 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 /**
- * 倒排索引
+ * 排序
  * @author caixiaocong
  *
  */
-public class InvertedIndex extends Configured implements Tool{
+public class Sort extends Configured implements Tool{
 
-	public static final Log log = LogFactory.getLog(InvertedIndex.class);
+	public static final Log log = LogFactory.getLog(Sort.class);
 	
-	//Mapper
-	public static class MyMapper extends Mapper<LongWritable,Text,Text,Text>{
+	//Map
+	public static class MyMapper extends Mapper<LongWritable,Text,IntWritable,IntWritable>{
 		
 		@Override
 		public void map(LongWritable key,Text value,Context context) throws IOException, InterruptedException{
-			
-			String line = value.toString();
-			StringTokenizer tokens = new StringTokenizer(line);
-			
-			//获取输入文件名
-			FileSplit fileSplit = (FileSplit)context.getInputSplit();
-			String fileName = fileSplit.getPath().getName();
-			
-			while(tokens.hasMoreTokens()){
-				context.write(new Text(fileName + ":" + tokens.nextToken()), new Text("1"));
-			}
-
+			int number = Integer.parseInt(value.toString());
+			context.write(new IntWritable(number),new IntWritable(1));
 		}
 		
 	}
 	
-	
-	//Combiner
-	public static class MyCombiner extends Reducer<Text,Text,Text,Text>{
+	//Reduce
+	public static class MyReducer extends Reducer<IntWritable,IntWritable,IntWritable,IntWritable>{
+		
+		private static IntWritable linenum = new IntWritable(1); 
 		
 		@Override
-		public void reduce(Text key,Iterable<Text> values,Context context) throws IOException, InterruptedException{
-			String tokens[] = key.toString().split(":");
-			int sum = 0;
-			for(Text value:values){
-				sum += Integer.parseInt(value.toString());
+		@SuppressWarnings("unused")
+		public void reduce(IntWritable key,Iterable<IntWritable> values,Context context) throws IOException, InterruptedException{
+			for(IntWritable value:values){
+				context.write(linenum, key);
+				linenum = new IntWritable(linenum.get()+1);
 			}
-			context.write(new Text(tokens[1]), new Text(tokens[0] + ":" + sum));
 		}
 		
 	}
-	
-	
-	//Reducer
-	public static class MyReducer extends Reducer<Text,Text,Text,Text>{
 		
-		@Override
-		public void reduce(Text key,Iterable<Text> values,Context context) throws IOException, InterruptedException{
-			String str = "";
-			for(Text value:values){
-				str += value + ";";
-			}
-			context.write(key,new Text(str));
-		}
-		
-	}
-	
-	
-	//run
+	//Run
 	public int run(String[] args) throws Exception {
 		
 		Configuration conf = new Configuration();  
-        Job job = Job.getInstance(conf,"InvertedIndex");
+        Job job = Job.getInstance(conf,"Sort");
         
-        job.setJarByClass(InvertedIndex.class);  
+        job.setJarByClass(Sort.class);  
         job.setMapperClass(MyMapper.class);  
-        job.setCombinerClass(MyCombiner.class);
         job.setReducerClass(MyReducer.class);
       
-        job.setOutputKeyClass(Text.class);  
-        job.setOutputValueClass(Text.class);  
+        job.setOutputKeyClass(IntWritable.class);  
+        job.setOutputValueClass(IntWritable.class);  
         job.setInputFormatClass(TextInputFormat.class);  
         job.setOutputFormatClass(TextOutputFormat.class);  
   
@@ -106,14 +78,14 @@ public class InvertedIndex extends Configured implements Tool{
 		return job.waitForCompletion(true) ? 0 : 1;  
 		
 	}
-	
+
 	
 	public static void main(String[] args) throws Exception {
 		String arg[] = new String[]{
-			"./target/input/2",
-			"./target/output/2"
+			"./target/input/4",
+			"./target/output/4"
 		};
-		int ret = ToolRunner.run(new InvertedIndex(), arg);
+		int ret = ToolRunner.run(new Sort(), arg);
 			
 		log.info("MapReduce Finished.");
 		System.exit(ret);

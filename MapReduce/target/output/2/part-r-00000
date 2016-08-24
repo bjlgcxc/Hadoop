@@ -1,6 +1,5 @@
-Hello	file3.txt:1;
-Mapreduce	file3.txt:2;file1.txt:1;file2.txt:1;
-bye	file3.txt:1;
-is	file1.txt:1;file2.txt:2;
-powerful	file2.txt:1;
-simple	file2.txt:1;file1.txt:1;
+Mapreduce	file3.txt:3;file3.txt:2;
+bye	file3.txt:6;file3.txt:4;file2.txt:4;file2.txt:3;file1.txt:2;file3.txt:2;file2.txt:2;
+is	file3.txt:3;file3.txt:2;
+powerful	file2.txt:8;file2.txt:6;file2.txt:4;file2.txt:2;file1.txt:2;
+simple	file2.txt:4;file2.txt:3;file2.txt:2;
