@@ -71,8 +71,8 @@ public class InvertedIndex2 extends Configured implements Tool{
 		
 		@Override
 		public void reduce(Text key,Iterable<Text> values,Context context) throws IOException, InterruptedException{
-			String term = key.toString().split(" ")[0];
-			String freq = key.toString().split(" ")[1];
+			String term = key.toString().split("\\s+")[0];
+			String freq = key.toString().split("\\s+")[1];
 			if(!current.equals(term)){
 				if(!str.equals("")){
 					context.write(new Text(term),new Text(str));
